@@ -8,11 +8,13 @@
 use core::panic::PanicInfo;
 use x86_64::instructions::port::Port;
 
+pub mod gdt;
 pub mod interrupts;
 pub mod serial;
 pub mod vga_buffer;
 
 pub fn init() {
+    gdt::init();
     interrupts::init_idt();
 }
 
