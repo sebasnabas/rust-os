@@ -4,10 +4,14 @@
 #![test_runner(rust_os::test_runner)]
 #![reexport_test_harness_main = "test_main"]
 
-use core::panic::PanicInfo;
 use alloc::{boxed::Box, vec::Vec};
 use bootloader::{entry_point, BootInfo};
-use rust_os::{allocator::{self, HEAP_SIZE}, memory, memory::BootInfoFrameAllocator};
+use core::panic::PanicInfo;
+use rust_os::{
+    allocator::{self, HEAP_SIZE},
+    memory,
+    memory::BootInfoFrameAllocator,
+};
 use x86_64::VirtAddr;
 
 extern crate alloc;
@@ -17,10 +21,8 @@ entry_point!(main);
 fn main(boot_info: &'static BootInfo) -> ! {
     rust_os::init();
     let phys_mem_offset = VirtAddr::new(boot_info.physical_memory_offset);
-    let mut mapper = unsafe { memory::init(phys_mem_offset)};
-    let mut frame_allocator = unsafe {
-        BootInfoFrameAllocator::init(&boot_info.memory_map)
-    };
+    let mut mapper = unsafe { memory::init(phys_mem_offset) };
+    let mut frame_allocator = unsafe { BootInfoFrameAllocator::init(&boot_info.memory_map) };
     allocator::init_heap(&mut mapper, &mut frame_allocator).expect("heap initialization failed");
 
     test_main();

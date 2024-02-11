@@ -1,4 +1,7 @@
-use core::{alloc::{GlobalAlloc, Layout}, mem, ptr};
+use core::{
+    alloc::{GlobalAlloc, Layout},
+    mem, ptr,
+};
 
 use crate::allocator::align_up;
 
